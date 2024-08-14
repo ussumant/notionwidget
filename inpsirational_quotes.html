@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple-Inspired Motivational Quotes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=San+Francisco:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+        }
+        .widget-container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        #quote {
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .config-options {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .config-options.show {
+            max-height: 300px; /* Adjust as needed */
+        }
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 17px;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            transition: border-color 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0071e3;
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231d1d1f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+        .cta-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #getInspired {
+            background-color: transparent;
+            border: none;
+            color: #0071e3;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 17px;
+            font-weight: 400;
+            margin: 4px 10px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        #getInspired:hover {
+            opacity: 0.8;
+        }
+        #configToggle {
+            background-color: transparent;
+            color: #86868b;
+            border: none;
+            font-size: 14px;
+            padding: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        #configToggle:hover {
+            opacity: 0.8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <div id="quote">Inspiration is about to happen.</div>
+        <div class="cta-container">
+            <button id="getInspired" onclick="generateQuote()">Get Inspired</button>
+            <button id="configToggle" onclick="toggleConfig()">Customize</button>
+        </div>
+        <div class="config-options">
+            <select id="challengeSelect">
+                <option value="">Select your challenge</option>
+                <option value="distraction">Getting distracted</option>
+                <option value="anxiety">Work-related anxiety</option>
+                <option value="motivation">Lack of motivation</option>
+                <option value="time">Time management</option>
+            </select>
+            <input type="text" id="customChallenge" placeholder="Or type your own challenge">
+        </div>
+    </div>
+
+    <script>
+        const quotes = {
+            distraction: [
+                "Focus on being productive instead of busy. - Tim Ferriss",
+                "The successful warrior is the average man, with laser-like focus. - Bruce Lee",
+                "Concentrate all your thoughts upon the work in hand. - Alexander Graham Bell",
+                "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment. - Buddha",
+                "Starve your distractions, feed your focus. - Unknown"
+            ],
+            anxiety: [
+                "Anxiety does not empty tomorrow of its sorrows, but only empties today of its strength. - Charles Spurgeon",
+                "You don't have to control your thoughts. You just have to stop letting them control you. - Dan Millman",
+                "Anxiety is a thin stream of fear trickling through the mind. If encouraged, it cuts a channel into which all other thoughts are drained. - Arthur Somers Roche",
+                "Worry often gives a small thing a big shadow. - Swedish Proverb",
+                "Don't let your mind bully your body into believing it must carry the burden of its worries. - Astrid Alauda"
+            ],
+            motivation: [
+                "The only way to do great work is to love what you do. - Steve Jobs",
+                "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+                "Believe you can and you're halfway there. - Theodore Roosevelt",
+                "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+                "Don't watch the clock; do what it does. Keep going. - Sam Levenson"
+            ],
+            time: [
+                "The key is not to prioritize what's on your schedule, but to schedule your priorities. - Stephen Covey",
+                "Time is more valuable than money. You can get more money, but you cannot get more time. - Jim Rohn",
+                "The bad news is time flies. The good news is you're the pilot. - Michael Altshuler",
+                "Either you run the day or the day runs you. - Jim Rohn",
+                "Time is the most valuable coin in your life. You and you alone will determine how that coin will be spent. - Carl Sandburg"
+            ]
+        };
+
+        function generateQuote() {
+            let challenge = document.getElementById('challengeSelect').value;
+            const customChallenge = document.getElementById('customChallenge').value.trim().toLowerCase();
+            
+            if (customChallenge) {
+                challenge = customChallenge;
+            }
+
+            let quoteArray;
+            if (quotes[challenge]) {
+                quoteArray = quotes[challenge];
+            } else {
+                quoteArray = Object.values(quotes).flat();
+            }
+
+            const randomIndex = Math.floor(Math.random() * quoteArray.length);
+            const quote = quoteArray[randomIndex];
+            
+            const quoteElement = document.getElementById('quote');
+            quoteElement.style.animation = 'none';
+            quoteElement.offsetHeight; /* trigger reflow */
+            quoteElement.style.animation = null;
+            quoteElement.style.animation = 'fadeIn 0.5s ease-out';
+            quoteElement.textContent = quote;
+        }
+
+        function toggleConfig() {
+            const configOptions = document.querySelector('.config-options');
+            configOptions.classList.toggle('show');
+            const configToggle = document.getElementById('configToggle');
+            configToggle.textContent = configOptions.classList.contains('show') ? 'Hide Options' : 'Customize';
+        }
+
+        // Generate a quote when the page loads
+        generateQuote();
+    </script>
+</body>
+</html>
